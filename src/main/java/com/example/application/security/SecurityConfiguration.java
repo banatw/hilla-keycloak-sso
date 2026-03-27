@@ -1,0 +1,75 @@
+package com.example.application.security;
+
+import static com.vaadin.flow.spring.security.VaadinSecurityConfigurer.vaadin;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import com.example.application.data.UserApp;
+import com.example.application.data.UserAppRepository;
+import com.vaadin.flow.spring.security.VaadinAwareSecurityContextHolderStrategyConfiguration;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
+import org.springframework.security.web.SecurityFilterChain;
+
+@EnableWebSecurity
+@Configuration
+@Import(VaadinAwareSecurityContextHolderStrategyConfiguration.class)
+public class SecurityConfiguration {
+    @Autowired
+    private UserAppRepository repository;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain vaadinSecurityFilterChain(HttpSecurity http) throws Exception {
+
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/images/*.png", "/*.css").permitAll());
+
+        // Icons from the line-awesome addon
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/line-awesome/**").permitAll());
+        
+        http.with(vaadin(), vaadin -> {
+            vaadin.oauth2LoginPage("/oauth2/authorization/keycloak");
+        });
+
+
+        return http.build();
+    }
+
+    @Bean
+    GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
+        return (authorities) -> {
+            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+            authorities.forEach(auth ->{
+                if(OidcUserAuthority.class.isInstance(auth)) {
+                    OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) auth;
+                    OidcUserInfo oidcUserInfo = oidcUserAuthority.getUserInfo();
+                    UserApp userApp = repository.findByUsername(oidcUserInfo.getPreferredUsername());
+                    userApp.getRoles().stream().forEach(role ->{
+                        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_" + role.name());
+                        mappedAuthorities.add(simpleGrantedAuthority);
+                    });
+                    
+                }
+            });
+            return mappedAuthorities;
+
+        };
+    }
+}

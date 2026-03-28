@@ -72,12 +72,16 @@ export default function UserAction({modalOpen, username,refreshGrid} : dialogPro
                 :  <Select items={keycloakUsers2.value} {...field(model.username)} label={"Username"} readonly  />
             }            */}
             {/* <ComboBox  items={keycloakUsers.value} itemLabelPath="label" itemValuePath="id"  selectedItem={selectedItem.value} /> */}
-            <ComboBox  items={keycloakUsers.value} 
-                    onSelectedItemChanged={(e) => {
-                        const username = e.detail.value
-                        selectedItem.value = username ? username : ''
-                    }} selectedItem={selectedItem.value}
-                /> 
+            <ComboBox  
+                items={keycloakUsers.value} 
+                onSelectedItemChanged={(e) => {
+                    const username = e.detail.value
+                    selectedItem.value = username ? username : ''
+                }} 
+                selectedItem={selectedItem.value}
+                label={"Keycloak User"}
+                readonly={username!==undefined}
+            /> 
             <TextField  {...field(model.name)} label={"Name"} />
             <CheckboxGroup {...field(model.roles)}>
                 {

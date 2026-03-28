@@ -56,8 +56,8 @@ public class SecurityConfiguration {
         
         http.with(vaadin(), vaadin -> {
             vaadin.oauth2LoginPage("/oauth2/authorization/keycloak");
-            var logoutHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-            vaadin.logoutSuccessHandler(logoutHandler);
+            // var logoutHandler = new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+            // vaadin.logoutSuccessHandler(logoutHandler);
         });
 
         // http.with(vaadin(), vaadin -> {

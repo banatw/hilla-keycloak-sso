@@ -11,10 +11,15 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Entity
+@Table(indexes = {
+    @Index(columnList = "username")
+})
 @Data
 public class UserApp {
     @Id

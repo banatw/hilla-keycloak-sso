@@ -7,6 +7,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.example.application.data.UserAppRepository;
 import com.vaadin.hilla.BrowserCallable;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -18,15 +19,25 @@ public class KeycloakService {
     private String keycloakRealm;
 
     private final Keycloak keycloak;
+    private final UserAppRepository repository;
 
     public record KeycloakUserRecord(String value,String label) {
     }
 
-    public KeycloakService(Keycloak keycloak) {
+    public KeycloakService(Keycloak keycloak, UserAppRepository r) {
         this.keycloak = keycloak;
+        this.repository = r;
     }
 
-    public List<KeycloakUserRecord> getKeycloakUsers() {
-        return keycloak.realm("vaadin").users().search("").stream().map(data -> new KeycloakUserRecord(data.getUsername(), data.getUsername())).collect(Collectors.toList());
+    // public List<KeycloakUserRecord> getKeycloakUsers() {
+    //     return keycloak.realm("vaadin").users().list().stream().map(data -> new KeycloakUserRecord(data.getUsername(), data.getUsername())).collect(Collectors.toList());
+    // }
+
+    public KeycloakUserRecord getKeycloakUserRecord(String username) {
+        return new KeycloakUserRecord(username, username);
+    }
+
+     public List<String> getKeycloakUsers() {
+        return keycloak.realm("vaadin").users().list().stream().map(UserRepresentation::getUsername).collect(Collectors.toList());
     }
 }

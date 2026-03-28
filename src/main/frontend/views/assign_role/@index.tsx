@@ -10,9 +10,9 @@ import UserAction from "./_UserAction"
 
 const config: ViewConfig = {
     rolesAllowed: ['ROLE_ADMIN'],
-    title: 'User',
+    title: 'Assign Role',
     menu: {
-        title: "User",
+        title: "Assign role",
         icon: 'line-awesome/svg/users-solid.svg'
     }
 }

@@ -16,21 +16,32 @@ interface dialogProps {
 export default function UserAction({modalOpen, username,refreshGrid} : dialogProps) {
     const { read,field,model,submit } = useForm(UserAppModel,{
         onSubmit: async (userapp)=>{
+            if(selectedItem.value)
+            userapp.username = selectedItem.value
             await UserAppService.saveUserApp(userapp).then(x => {
                 refreshGrid()
                 modalOpen.value = false
             })
         }
     })
-    const keycloakUsers = useSignal<KeycloakUserRecord[]>([])
+    // const keycloakUsers = useSignal<KeycloakUserRecord[]>([])
+    const keycloakUsers = useSignal<string[]>([])
     const [roles, setRoles] = useState<string[]>([])
+    // const selectedItem = useSignal<KeycloakUserRecord | undefined>(undefined)
+    const selectedItem = useSignal<string >('')
     useEffect(()=>{
         const fetchData = async()=>{
             if(username === undefined) {
-                await UserAppService.newUserApp().then(read)
+                await UserAppService.newUserApp().then(r=>{
+                    read(r)
+                    selectedItem.value = ''
+                })
             }
             else {
-                await UserAppService.findByUsername(username).then(read)
+                await UserAppService.findByUsername(username).then(r=>{
+                    read(r)
+                    selectedItem.value = r.username
+                })
             }
             await KeycloakService.getKeycloakUsers().then(results => keycloakUsers.value = results)
             await RoleService.list().then(result => setRoles(result))
@@ -51,9 +62,22 @@ export default function UserAction({modalOpen, username,refreshGrid} : dialogPro
         }
     >
         <FormLayout>
-            {/* <TextField {...field(model.username)} label={"Username"}  /> */}
-            {/* <ComboBox label={'Keycloak users'} itemLabelPath={"label"} itemIdPath={"id"} items={keycloakUsers.value} {...field(model.username)} /> */}
-            <Select items={keycloakUsers.value} {...field(model.username)} label={"Username"} />
+            {/* {
+                username === undefined ? <ComboBox  items={keycloakUsers2.value} 
+                    onSelectedItemChanged={(e) => {
+                        const username = e.detail.value
+                        selectedItem2.value = username ? username : ''
+                    }}
+                /> 
+                :  <Select items={keycloakUsers2.value} {...field(model.username)} label={"Username"} readonly  />
+            }            */}
+            {/* <ComboBox  items={keycloakUsers.value} itemLabelPath="label" itemValuePath="id"  selectedItem={selectedItem.value} /> */}
+            <ComboBox  items={keycloakUsers.value} 
+                    onSelectedItemChanged={(e) => {
+                        const username = e.detail.value
+                        selectedItem.value = username ? username : ''
+                    }} selectedItem={selectedItem.value}
+                /> 
             <TextField  {...field(model.name)} label={"Name"} />
             <CheckboxGroup {...field(model.roles)}>
                 {

@@ -30,9 +30,6 @@ public class UserApp {
     @NotEmpty
     private String username;
     
-    @NotEmpty
-    private String name;
-
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;

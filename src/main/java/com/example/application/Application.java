@@ -50,13 +50,11 @@ public class Application implements AppShellConfigurator {
         return x->{
             UserApp admin = new UserApp();
             admin.setUsername("admin");
-            admin.setName("Admin");
             admin.setRoles(Set.of(Role.ADMIN,Role.USER));
             service.save(admin);
 
             UserApp user = new UserApp();
             user.setUsername("user");
-            user.setName("User");
             user.setRoles(Set.of(Role.USER));
             service.save(user);
 

@@ -1,11 +1,12 @@
 import { ViewConfig } from '@vaadin/hilla-file-router/types.js';
 import { useSignal } from '@vaadin/hilla-react-signals';
-import { LoginI18n, LoginOverlay, LoginOverlayElement } from '@vaadin/react-components';
+import { Button, LoginI18n, LoginOverlay, LoginOverlayElement, VerticalLayout } from '@vaadin/react-components';
 import { useAuth } from 'Frontend/util/auth.js';
 
 export const config: ViewConfig = {
   menu: { exclude: true },
   flowLayout: false,
+  skipLayouts: true
 };
 
 const loginI18n: LoginI18n = {
@@ -18,25 +19,30 @@ export default function LoginView() {
   const loginError = useSignal(false);
 
   return (
-    <LoginOverlay
-      opened
-      error={loginError.value}
-      noForgotPassword
-      i18n={loginI18n}
-      onErrorChanged={(event) => {
-        loginError.value = event.detail.value;
-      }}
-      onLogin={async ({ detail: { username, password } }) => {
-        const { defaultUrl, error, redirectUrl } = await login(username, password);
+    // <LoginOverlay
+    //   opened
+    //   error={loginError.value}
+    //   noForgotPassword
+    //   i18n={loginI18n}
+    //   onErrorChanged={(event) => {
+    //     loginError.value = event.detail.value;
+    //   }}
+    //   onLogin={async ({ detail: { username, password } }) => {
+    //     const { defaultUrl, error, redirectUrl } = await login(username, password);
 
-        if (error) {
-          loginError.value = true;
-        } else {
-          const url = redirectUrl ?? defaultUrl ?? '/';
-          const path = new URL(url, document.baseURI).pathname;
-          document.location = path;
-        }
-      }}
-    />
+    //     if (error) {
+    //       loginError.value = true;
+    //     } else {
+    //       const url = redirectUrl ?? defaultUrl ?? '/';
+    //       const path = new URL(url, document.baseURI).pathname;
+    //       document.location = path;
+    //     }
+    //   }}
+    // />
+    <VerticalLayout>
+        <Button onClick={()=>{
+          window.location.href=''
+        }}>Klik me to login</Button>
+    </VerticalLayout>
   );
 }

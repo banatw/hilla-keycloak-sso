@@ -82,7 +82,6 @@ export default function UserAction({modalOpen, username,refreshGrid} : dialogPro
                 label={"Keycloak User"}
                 readonly={username!==undefined}
             /> 
-            <TextField  {...field(model.name)} label={"Name"} />
             <CheckboxGroup {...field(model.roles)}>
                 {
                 roles.map((value,index) => (

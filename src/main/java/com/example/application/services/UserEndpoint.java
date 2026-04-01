@@ -6,12 +6,10 @@ import com.vaadin.hilla.BrowserCallable;
 
 import java.util.Collection;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @BrowserCallable
 @AnonymousAllowed

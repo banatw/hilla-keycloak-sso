@@ -19,14 +19,12 @@ public class KeycloakService {
     private String keycloakRealm;
 
     private final Keycloak keycloak;
-    private final UserAppRepository repository;
 
     public record KeycloakUserRecord(String value,String label) {
     }
 
     public KeycloakService(Keycloak keycloak, UserAppRepository r) {
         this.keycloak = keycloak;
-        this.repository = r;
     }
 
     // public List<KeycloakUserRecord> getKeycloakUsers() {

@@ -28,7 +28,6 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @StyleSheet(Lumo.STYLESHEET)
 @StyleSheet(Lumo.UTILITY_STYLESHEET)
-@Theme(value = "my-app")
 public class Application implements AppShellConfigurator {
     //http://localhost:8081/realms/vaadin
 

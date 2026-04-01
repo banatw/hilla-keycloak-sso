@@ -42,7 +42,12 @@ export default function LoginView() {
     <VerticalLayout>
         <Button onClick={()=>{
           window.location.href=''
-        }}>Klik me to login</Button>
+        }} style={{
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
+  }} >Klik me to login</Button>
     </VerticalLayout>
   );
 }

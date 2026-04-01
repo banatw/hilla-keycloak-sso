@@ -1,6 +1,5 @@
 package com.example.application.services;
 
-import org.springframework.context.annotation.Role;
 
 import com.example.application.data.UserApp;
 import com.example.application.data.UserAppRepository;

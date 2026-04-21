@@ -58,24 +58,5 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    @Bean
-    GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
-        return (authorities) -> {
-            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-            authorities.forEach(auth ->{
-                if(OidcUserAuthority.class.isInstance(auth)) {
-                    OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) auth;
-                    OidcUserInfo oidcUserInfo = oidcUserAuthority.getUserInfo();
-                    UserApp userApp = repository.findByUsername(oidcUserInfo.getPreferredUsername());
-                    userApp.getRoles().stream().forEach(role ->{
-                        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("ROLE_" + role.name());
-                        mappedAuthorities.add(simpleGrantedAuthority);
-                    });
-                    
-                }
-            });
-            return mappedAuthorities;
-
-        };
-    }
+    
 }

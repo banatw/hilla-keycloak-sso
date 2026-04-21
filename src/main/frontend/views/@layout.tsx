@@ -33,11 +33,11 @@ export default function MainLayout() {
   //   )}`;
   const LogoutButton =()=>{
     return(
-      <Button onClick={()=>{
+      <Button onClick={async ()=>{
         // const link = document.createElement('a')
         // link.href = "http://localhost:8082"
         // link.click()
-        logout()
+        await logout()
       }
 
       }>Logout</Button>
@@ -65,7 +65,13 @@ export default function MainLayout() {
                 <Avatar theme="xsmall"  name={state.user.username} />
                 {state.user.username}
               </div>
-              <LogoutButton />
+              <Button
+                onClick={async () => {
+                  await logout();
+                }}
+              >
+                Sign out
+              </Button>
             </>
           ) : (
             <Link to="/login">Sign in</Link>

@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Set;
 
@@ -16,16 +18,29 @@ import java.util.Set;
 @Table(name = "application_user")
 public class User extends AbstractEntity {
 
+    @NotBlank(message = "tidak boleh kosong")
     private String username;
+
+    @NotBlank(message = "tidak boleh kosong")
     private String name;
     @JsonIgnore
     private String hashedPassword;
+
+    @NotEmpty
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
     @Lob
     @Column(length = 1000000)
     private byte[] profilePicture;
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 
     public String getUsername() {
         return username;

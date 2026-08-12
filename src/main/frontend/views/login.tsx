@@ -1,7 +1,10 @@
 import { ViewConfig } from '@vaadin/hilla-file-router/types.js';
+import { logout } from '@vaadin/hilla-frontend';
 import { useSignal } from '@vaadin/hilla-react-signals';
 import { LoginI18n, LoginOverlay, LoginOverlayElement } from '@vaadin/react-components';
 import { useAuth } from 'Frontend/util/auth.js';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 export const config: ViewConfig = {
   menu: { exclude: true },
@@ -16,27 +19,37 @@ const loginI18n: LoginI18n = {
 export default function LoginView() {
   const { login } = useAuth();
   const loginError = useSignal(false);
+  const navigate = useNavigate()
 
-  return (
-    <LoginOverlay
-      opened
-      error={loginError.value}
-      noForgotPassword
-      i18n={loginI18n}
-      onErrorChanged={(event) => {
-        loginError.value = event.detail.value;
-      }}
-      onLogin={async ({ detail: { username, password } }) => {
-        const { defaultUrl, error, redirectUrl } = await login(username, password);
+  useEffect(() => {
+    // Redirect immediately to the target route when the page loads
+    const doLogout = async () => {
+      await logout()
+    }
 
-        if (error) {
-          loginError.value = true;
-        } else {
-          const url = redirectUrl ?? defaultUrl ?? '/';
-          const path = new URL(url, document.baseURI).pathname;
-          document.location = path;
-        }
-      }}
-    />
+    doLogout()
+  }, []);
+
+  return (<></>
+    // <LoginOverlay
+    //   opened
+    //   error={loginError.value}
+    //   noForgotPassword
+    //   i18n={loginI18n}
+    //   onErrorChanged={(event) => {
+    //     loginError.value = event.detail.value;
+    //   }}
+    //   onLogin={async ({ detail: { username, password } }) => {
+    //     const { defaultUrl, error, redirectUrl } = await login(username, password);
+
+    //     if (error) {
+    //       loginError.value = true;
+    //     } else {
+    //       const url = redirectUrl ?? defaultUrl ?? '/';
+    //       const path = new URL(url, document.baseURI).pathname;
+    //       document.location = path;
+    //     }
+    //   }}
+    // />
   );
 }

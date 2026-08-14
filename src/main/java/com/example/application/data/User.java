@@ -19,6 +19,7 @@ import java.util.Set;
 public class User extends AbstractEntity {
 
     @NotBlank(message = "tidak boleh kosong")
+    @Column(unique = true)
     private String username;
 
     @NotBlank(message = "tidak boleh kosong")

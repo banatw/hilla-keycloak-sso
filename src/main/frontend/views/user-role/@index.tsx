@@ -21,7 +21,9 @@ export default function UserView() {
         const user = item
         return (
             <HorizontalLayout theme="spacing">
-                <NavLink to={`/user-role/edit/${user.id}`}>Edit</NavLink>
+                <Button onClick={() => {
+                    navigate(`/user-role/edit/${user.id}`, { replace: true })
+                }}>Edit</Button>
                 <Button onClick={async () => {
                     if (confirm('are u sure?'))
                         UserRoleService.delete(user).then(() => {
@@ -36,7 +38,7 @@ export default function UserView() {
     const gridRef = React.useRef<AutoGridRef>(null)
     return (
         <VerticalLayout>
-            <NavLink to={`/user-role/add`} >Add</NavLink>
+            <Button onClick={() => navigate(`/user-role/add`, { replace: true })}>Add</Button>
             <AutoGrid
                 ref={gridRef}
                 service={UserRoleService}

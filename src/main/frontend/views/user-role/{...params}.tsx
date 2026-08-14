@@ -24,8 +24,8 @@ export default function ActionView() {
         onSubmit: async (user) => {
             await UserRoleService.save(user).then((user) => {
                 Notification.show(`User ${user.username} telah disimpan`, { theme: 'success', position: 'top-end' })
-            }).finally(() => {
-                navigate(`/user-role`)
+            }).catch(() => {
+                Notification.show(`User sudah ada`, { theme: 'error', position: 'top-end' })
             })
         }
     })
@@ -46,7 +46,7 @@ export default function ActionView() {
             <TextField  {...form.field(form.model.name)} label={'Name'} />
             <MultiSelectComboBox {...form.field(form.model.roles)} items={roles} />
             <FormRow theme="spacing">
-                <Button onClick={form.submit} disabled={form.dirty && form.submitting}>Simpan</Button>
+                <Button onClick={form.submit} disabled={form.invalid || form.submitting}>Simpan</Button>
                 <Button onClick={() => navigate(`/user-role`)}>Kembali</Button>
             </FormRow>
         </FormLayout>

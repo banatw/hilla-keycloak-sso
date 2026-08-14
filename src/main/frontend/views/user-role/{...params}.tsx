@@ -13,17 +13,17 @@ export const config: ViewConfig = {
         exclude: true
     },
 }
-export default function UserRoleEditView() {
+export default function ActionView() {
     const { "*": params } = useParams()
-    const id: string | undefined = params?.split('/').at(1)
-    const action: string | undefined = params?.split('/').at(0)
+    const id = params?.split('/').at(1)
+
     const [roles, setRoles] = useState<string[]>([])
     const navigate = useNavigate()
 
     const form = useForm(UserModel, {
         onSubmit: async (user) => {
             await UserRoleService.save(user).then((user) => {
-                Notification.show(`User ${user.username} telah disimpan`, { theme: 'primary' })
+                Notification.show(`User ${user.username} telah disimpan`, { theme: 'success', position: 'top-end' })
             }).finally(() => {
                 navigate(`/user-role`)
             })

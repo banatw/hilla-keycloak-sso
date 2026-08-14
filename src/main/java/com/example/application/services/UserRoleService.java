@@ -15,17 +15,21 @@ public class UserRoleService extends ListRepositoryService<User, Long, UserRepos
     /**
      *
      */
-    private final UserRepository repository;
+    private final UserService service;
 
-    public UserRoleService(UserRepository repo) {
-        this.repository = repo;
+    public UserRoleService(UserService svc) {
+        this.service = svc;
     }
 
     public User save(User entity) {
-        return repository.save(entity);
+        return service.save(entity);
     }
 
     public Optional<User> addUser() {
         return Optional.of(new User());
+    }
+
+    public void delete(User user) {
+        service.delete(user.getId());
     }
 }

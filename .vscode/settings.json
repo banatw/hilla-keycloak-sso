@@ -15,5 +15,6 @@
         "statusBar.debuggingForeground": "#FEFCFC",
         "statusBar.noFolderBackground": "#551913",
         "statusBar.noFolderForeground": "#FEFCFC"
-    }
+    },
+    "java.debug.settings.hotCodeReplace": "auto"
 }

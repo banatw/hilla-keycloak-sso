@@ -1,0 +1,7 @@
+/*
+ * This file has been created by the Vaadin Theme Editor. Please note that
+ * manual changes to individual CSS properties may be overwritten by the theme editor.
+ */
+vaadin-side-nav-item.layout-side-nav-item>[slot="prefix"] {
+    font-size: var(--lumo-font-size-l);
+}

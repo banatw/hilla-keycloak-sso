@@ -3,6 +3,7 @@ package com.example.application.security;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
